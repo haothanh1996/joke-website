@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
 import { JokeService } from './joke.service';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { UpdateJokeDto } from './dto/update-joke.dto';
-import { ReactionType } from './entities/enums/joke.reaction-type';
 
 @Controller('joke')
 export class JokeController {
