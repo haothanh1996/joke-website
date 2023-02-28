@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Joke</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.jpg" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <header class="header shadow">
+      <div class="container flex-center">
+        <div class="logo">
+          <img src="images/logo.jpg" />
+        </div>
+        <div class="user flex-align-center">
+          <div class="info">
+            <div class="author">Handicafted by</div>
+            <div class="name">Jim HLS</div>
+          </div>
+          <div class="avatar">
+            <img src="images/avatar.png" />
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="banner">
+      <div class="banner-title">A joke a day keeps the doctor away</div>
+      <div class="banner-sub-title">
+        if you joke wrong way, your teeth have to pay. (Serious)
+      </div>
+    </div>
+    <div class="joke">
+      <div class="joke-content" id="joke"></div>
+      <div class="divider"></div>
+      <div class="joke-actions">
+        <button class="blue" onclick="vote('like')">This is Funny!</button>
+        <button class="green" onclick="vote('dislike')">
+          This is not funny.
+        </button>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-content">
+        This website is created as part of Hlsolutions program. The meterials
+        contained on this website are provided for general<br />
+        infomation only and do not consitute any form of advice. HLS assumes no
+        responsibility for the accuracy of any particular statement and<br />
+        accepts no liability for any loss or damage which may arise from
+        reliance on the information contained on this site.
+      </div>
+      <div class="footer-copyright">Copyright 2021 HLS</div>
+    </div>
+    <script>
+      const url = "https://joke-be.herokuapp.com/api";
+      let jokes = [];
+      let curJoke = null;
+      function nextJoke() {
+        const vote = getCookie("vote");
+        let voted = [];
+        if (!!vote) {
+          voted = JSON.parse(vote);
+        }
+        const remainJoke = jokes.filter((x) => !voted.includes(x.id));
+        if (remainJoke.length > 0) {
+          curJoke = remainJoke[0];
+          document.getElementById("joke").innerHTML = curJoke.content;
+        } else {
+          document.getElementById("joke").innerHTML =
+            "That's all the jokes for today! Come back another day!";
+          const buttons = document.getElementsByTagName("button");
+          for (const button of buttons) {
+            button.disabled = true;
+          }
+        }
+      }
+      function vote(value) {
+        axios.put(`${url}/joke/${curJoke.id}/reaction`, { type: value });
+        const vote = getCookie("vote");
+        let newVote = [];
+        if (!!vote) {
+          newVote = JSON.parse(vote);
+        }
+        newVote.push(curJoke.id);
+        document.cookie = `vote=${JSON.stringify(newVote)}`;
+        nextJoke();
+      }
+      function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(";");
+        for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == " ") {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        getJoke();
+      });
+      function getJoke() {
+        axios.get(`${url}/joke`).then(function (response) {
+          if (response?.data) {
+            jokes = response.data;
+            getJokeAvalable();
+          }
+        });
+      }
+      function getJokeAvalable() {
+        const vote = getCookie("vote");
+        if (!!vote) {
+          nextJoke();
+        } else {
+          curJoke = jokes[0];
+          document.getElementById("joke").innerHTML = curJoke.content;
+        }
+      }
+    </script>
+  </body>
+</html>
