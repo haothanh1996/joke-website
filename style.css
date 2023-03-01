@@ -76,8 +76,15 @@ body {
 }
 
 .banner-title {
-  font-size: 32px;
+  font-size: 40px;
   margin-bottom: 30px;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 600;
+}
+
+.banner-sub-title {
+  font-size: 15px;
+  font-family: 'Mulish', sans-serif;
 }
 
 .joke {
@@ -89,10 +96,13 @@ body {
 
 .joke-content {
   color: gray;
-  font-size: 20px;
-  padding: 50px;
+  font-size: 22px;
+  padding: 70px;
   display: flex;
   justify-content: center;
+  line-height: 1.5;
+  font-family: 'Hind Guntur', sans-serif;
+  font-weight: 100;
 }
 
 .divider {
@@ -107,12 +117,15 @@ body {
   display: flex;
   gap: 30px;
   justify-content: center;
+  margin-top: 70px;
 }
 
 button {
-  height: 48px;
-  width: 200px;
+  height: 52px;
+  width: 280px;
   background: #3088df;
+  font-family: 'Mulish', sans-serif;
+  font-size: 18px;
   color: white;
   border: none;
   cursor: pointer;
@@ -141,6 +154,7 @@ button:disabled {
   margin-bottom: 16px;
   line-height: 1.5;
   font-size: 16px;
+  font-family: 'Hind Guntur', sans-serif;
 }
 
 .footer-copyright {
