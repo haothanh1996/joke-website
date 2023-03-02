@@ -1,6 +1,8 @@
+import { AutomapperModule } from '@automapper/nestjs';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { classes } from '@automapper/classes';
 import { appConfiguration, AppConfiguration } from 'config';
 import { JokeModule } from './joke/joke.module';
 
@@ -19,6 +21,9 @@ import { JokeModule } from './joke/joke.module';
           dbName: config.mongoDB.dbname,
         };
       },
+    }),
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
     }),
   ],
 })
