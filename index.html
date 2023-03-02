@@ -78,7 +78,7 @@
         }
       }
       function vote(value) {
-        axios.put(`${url}/joke/${curJoke.id}/reaction`, { type: value });
+        axios.put(`${url}/jokes/${curJoke.id}/reaction`, { type: value });
         const vote = getCookie("vote");
         let newVote = [];
         if (!!vote) {
@@ -107,9 +107,9 @@
         getJoke();
       });
       function getJoke() {
-        axios.get(`${url}/joke`).then(function (response) {
-          if (response?.data) {
-            jokes = response.data;
+        axios.get(`${url}/jokes`).then(function (response) {
+          if (response?.data?.success) {
+            jokes = response.data?.data;
             getJokeAvalable();
           }
         });
