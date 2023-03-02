@@ -29,7 +29,7 @@ body {
 }
 
 .container {
-  width: 1440px;
+  width: 1100px;
   margin: 0 auto;
 }
 
@@ -89,7 +89,7 @@ body {
 
 .joke {
   min-height: calc(100vh - 560px);
-  max-width: 1440px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: left;
 }
@@ -148,7 +148,7 @@ button:disabled {
 }
 
 .footer-content {
-  max-width: 1440px;
+  max-width: 1200px;
   margin: 0 auto;
   color: gray;
   margin-bottom: 16px;
