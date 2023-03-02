@@ -6,8 +6,8 @@ import { UpdateJokeDto } from './dto/update-joke.dto';
 import { Joke, JokeDocument } from './entities/joke.entity';
 import { ReactionType } from './entities/enums/joke.reaction-type';
 import { JokeDto } from './dto/joke.dto';
+import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/types';
 import { BaseResult } from './dto/base.result';
 import { deserialize, deserializeArray } from 'class-transformer';
 
@@ -17,7 +17,7 @@ export class JokesService {
     @InjectModel(Joke.name)
     private readonly jokesModel: Model<JokeDocument>,
     @InjectMapper()
-    private mapper: Mapper,
+    private readonly mapper: Mapper,
   ) {}
 
   async createJoke(createJokeDto: CreateJokeDto): Promise<BaseResult<JokeDto>> {
@@ -25,7 +25,7 @@ export class JokesService {
     try {
       const joke = await this.jokesModel.create(createJokeDto);
       const autoData = deserialize(Joke, JSON.stringify(joke));
-      const jokeDto = await this.mapper.mapAsync(autoData, JokeDto, Joke);
+      const jokeDto = await this.mapper.mapAsync(autoData, Joke, JokeDto);
       result.data = jokeDto;
       return result;
     } catch (error) {
@@ -41,7 +41,7 @@ export class JokesService {
       throw new BadRequestException('Jokes is not found');
     }
     const autoData = deserializeArray(Joke, JSON.stringify(jokes));
-    const jokeDto = await this.mapper.mapArrayAsync(autoData, JokeDto, Joke);
+    const jokeDto = await this.mapper.mapArrayAsync(autoData, Joke, JokeDto);
     result.data = jokeDto;
     return result;
   }
@@ -56,7 +56,7 @@ export class JokesService {
       throw new BadRequestException('Joke is not found');
     }
     const autoData = deserialize(Joke, JSON.stringify(joke));
-    const jokeDto = await this.mapper.mapAsync(autoData, JokeDto, Joke);
+    const jokeDto = await this.mapper.mapAsync(autoData, Joke, JokeDto);
     result.data = jokeDto;
     return result;
   }
@@ -93,7 +93,7 @@ export class JokesService {
       }
       await this.jokesModel.updateOne({ _id: id }, joke);
       const autoData = deserialize(Joke, JSON.stringify(joke));
-      const jokeDto = await this.mapper.mapAsync(autoData, JokeDto, Joke);
+      const jokeDto = await this.mapper.mapAsync(autoData, Joke, JokeDto);
       result.data = jokeDto;
       return result;
     } catch (error) {

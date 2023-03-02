@@ -15,15 +15,12 @@ export type JokeDocument = Joke & Document;
   },
 })
 export class Joke {
-  @AutoMap()
   @Prop({ required: true })
   content: string;
 
-  @AutoMap()
   @Prop({ required: true, default: 0 })
   like: number;
 
-  @AutoMap()
   @Prop({ required: true, default: 0 })
   dislike: number;
 }

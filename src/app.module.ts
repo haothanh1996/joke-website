@@ -23,8 +23,7 @@ import { JokeModule } from './joke/joke.module';
       },
     }),
     AutomapperModule.forRoot({
-      options: [{ name: '', pluginInitializer: classes }],
-      singular: true,
+      strategyInitializer: classes(),
     }),
   ],
 })
