@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
-import { JokeService } from './joke.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  HttpStatus,
+  Res,
+} from '@nestjs/common';
+import { JokesService } from './joke.service';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { UpdateJokeDto } from './dto/update-joke.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ReactionJokeDto } from './dto/reaction-joke.dto';
 
-@Controller('joke')
-export class JokeController {
-  constructor(private readonly jokeService: JokeService) {}
+@ApiTags('jokes')
+@Controller('jokes')
+export class JokesController {
+  constructor(private readonly jokesService: JokesService) {}
 
   @Post()
-  create(@Body() createJokeDto: CreateJokeDto) {
-    return this.jokeService.create(createJokeDto);
+  public async createJoke(@Res() res, @Body() createJokeDto: CreateJokeDto) {
+    const result = await this.jokesService.createJoke(createJokeDto);
+    return res.status(HttpStatus.OK).json(result);
   }
 
   @Get()
-  findAll() {
-    return this.jokeService.findAll();
+  public async getJokes(@Res() res) {
+    const result = await this.jokesService.getJokes();
+    return res.status(HttpStatus.OK).json(result);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.jokeService.findOne(+id);
+  public async getJoke(@Res() res, @Param('id') id: string) {
+    const result = await this.jokesService.getJoke(id);
+    return res.status(HttpStatus.OK).json(result);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateJokeDto: UpdateJokeDto) {
-    return this.jokeService.update(id, updateJokeDto);
+  public async updateJoke(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() updateDto: UpdateJokeDto,
+  ) {
+    const result = await this.jokesService.updateJoke(id, updateDto);
+    return res.status(HttpStatus.OK).json(result);
   }
 
   @Put(':id/reaction')
-  reaction(@Param('id') id: string, @Body() body: any) {
-    return this.jokeService.reaction(id, body.type);
+  public async reaction(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() reactionDto: ReactionJokeDto,
+  ) {
+    const result = await this.jokesService.reaction(id, reactionDto);
+    return res.status(HttpStatus.OK).json(result);
   }
 }
